@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./config/env.js";
 import app from "./app.js";
 import connectDB from "./config/db.js";
 import redisClient from "./config/redis.js";
@@ -11,7 +11,12 @@ const startServer = async () => {
     process.exit(1);
   }
 
-  await connectDB();
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
 
   if (!process.env.REDIS_URL) {
     console.error("REDIS_URL is not defined");

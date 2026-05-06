@@ -13,6 +13,10 @@ const getMongooseError = (error) => {
     return new ApiError(400, "Invalid resource identifier", [error.message]);
   }
 
+  if (error.code === 11000) {
+    return new ApiError(409, "Duplicate field value", [error.message]);
+  }
+
   return null;
 };
 

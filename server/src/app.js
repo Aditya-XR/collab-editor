@@ -1,12 +1,15 @@
-import "dotenv/config";
+import "./config/env.js";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import ApiError from "./utils/ApiError.js";
 import ApiResponse from "./utils/ApiResponse.js";
+import { sanitizeUser } from "./controllers/auth.controller.js";
 import asyncHandler from "./middlewares/asyncHandler.js";
+import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -24,6 +27,20 @@ app.get(
   "/api/v1/health",
   asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse("Server is healthy", {}));
+  })
+);
+
+app.use("/api/v1/auth", authRoutes);
+
+app.get(
+  "/api/v1/protected-test",
+  authMiddleware,
+  asyncHandler(async (req, res) => {
+    res.status(200).json(
+      new ApiResponse("Protected route accessed successfully", {
+        user: sanitizeUser(req.user)
+      })
+    );
   })
 );
 
