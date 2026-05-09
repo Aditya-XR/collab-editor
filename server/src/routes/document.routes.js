@@ -5,7 +5,8 @@ import {
   deleteDocument,
   getMyDocuments,
   getSingleDocument,
-  renameDocument
+  renameDocument,
+  updateDocumentContent
 } from "../controllers/document.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 
@@ -16,6 +17,7 @@ router.use(authMiddleware);
 router.post("/", createDocument);
 router.get("/", getMyDocuments);
 router.get("/:id", getSingleDocument);
+router.patch("/:id/content", updateDocumentContent);
 router.patch("/:id/title", renameDocument);
 router.patch("/:id/archive", archiveDocument);
 router.delete("/:id", deleteDocument);

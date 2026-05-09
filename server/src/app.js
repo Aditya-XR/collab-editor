@@ -11,6 +11,7 @@ import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authRoutes from "./routes/auth.routes.js";
 import documentRoutes from "./routes/document.routes.js";
+import uploadRoutes from "./routes/upload.routes.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.get(
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/documents", documentRoutes);
+app.use("/api/v1/upload", uploadRoutes);
 
 app.get(
   "/api/v1/protected-test",

@@ -7,6 +7,7 @@ import {
   validateMode,
   validateTitle
 } from "../services/document.service.js";
+import ApiError from "../utils/ApiError.js";
 
 const populateDocumentQuery = (query) => {
   return query.populate("owner", "name email avatar").populate("collaborators.user", "name email avatar");
@@ -96,6 +97,24 @@ export const deleteDocument = asyncHandler(async (req, res) => {
       document: {
         id: req.params.id
       }
+    })
+  );
+});
+
+export const updateDocumentContent = asyncHandler(async (req, res) => {
+  const { latestSnapshot } = req.body;
+
+  if (!Array.isArray(latestSnapshot)) {
+    throw new ApiError(400, "latestSnapshot must be an array");
+  }
+
+  const document = await requireDocumentAccess(req.params.id, req.user._id);
+  document.latestSnapshot = latestSnapshot;
+  await document.save();
+
+  res.status(200).json(
+    new ApiResponse("Document content saved successfully", {
+      document
     })
   );
 });

@@ -17,6 +17,10 @@ const getMongooseError = (error) => {
     return new ApiError(409, "Duplicate field value", [error.message]);
   }
 
+  if (error.name === "MulterError") {
+    return new ApiError(400, error.message);
+  }
+
   return null;
 };
 
