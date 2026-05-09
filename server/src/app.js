@@ -10,6 +10,7 @@ import asyncHandler from "./middlewares/asyncHandler.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authRoutes from "./routes/auth.routes.js";
+import documentRoutes from "./routes/document.routes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get(
 );
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/documents", documentRoutes);
 
 app.get(
   "/api/v1/protected-test",
